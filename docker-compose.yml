@@ -1,0 +1,31 @@
+services:
+  web:
+    build: .
+    container_name: gestione_utenti_web
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
+    ports:
+      - "8080:80" # open http://localhost:8080
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: gestione_utenti_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_HOST}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3307:3306" # so it doesn't conflict with local MAMP
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
