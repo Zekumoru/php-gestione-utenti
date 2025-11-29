@@ -1,4 +1,5 @@
 <?php
+require_once "db/conn.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +13,17 @@
 </head>
 
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <h1>Gestione Utenti</h1>
+
+        <div>
+            <a href="index.php">Home</a>
+            <a href="./pages/crea_utente.php">Crea Utente</a>
+            <a href="./pages/lista_utenti.php">Lista Utenti</a>
+        </div>
+
+        <p>Secgli un'operazione dal menu.</p>
+    </div>
 </body>
 
 </html>
