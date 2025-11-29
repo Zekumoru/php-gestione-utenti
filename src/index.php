@@ -13,16 +13,27 @@ require_once "db/conn.php";
 </head>
 
 <body>
-    <div id="app">
-        <h1>Gestione Utenti</h1>
+    <div class="app-shell" id="app">
+        <header class="top-nav">
+            <div class="brand">Gestione Utenti</div>
+            <nav class="nav-links">
+                <a class="nav-link active" href="index.php">Home</a>
+                <a class="nav-link" href="./pages/crea_utente.php">Crea Utente</a>
+                <a class="nav-link" href="./pages/lista_utenti.php">Lista Utenti</a>
+            </nav>
+        </header>
 
-        <div>
-            <a href="index.php">Home</a>
-            <a href="./pages/crea_utente.php">Crea Utente</a>
-            <a href="./pages/lista_utenti.php">Lista Utenti</a>
-        </div>
+        <main class="card hero">
+            <div class="page-head">
+                <h1 class="page-title">Gestisci gli utenti con stile</h1>
+                <p class="muted">Crea, consulta e aggiorna i profili della tua organizzazione in pochi click.</p>
+            </div>
 
-        <p>Secgli un'operazione dal menu.</p>
+            <div class="pill-grid">
+                <a class="action-link" href="./pages/crea_utente.php">➕ Crea un nuovo utente</a>
+                <a class="action-link secondary" href="./pages/lista_utenti.php">📋 Vai alla lista</a>
+            </div>
+        </main>
     </div>
 </body>
 
