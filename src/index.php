@@ -14,14 +14,7 @@ require_once "db/conn.php";
 
 <body>
     <div class="app-shell" id="app">
-        <header class="top-nav">
-            <div class="brand">Gestione Utenti</div>
-            <nav class="nav-links">
-                <a class="nav-link active" href="index.php">Home</a>
-                <a class="nav-link" href="./pages/utente/crea_utente.php">Crea Utente</a>
-                <a class="nav-link" href="./pages/utente/lista_utenti.php">Lista Utenti</a>
-            </nav>
-        </header>
+        <?php include __DIR__ . '/components/main-nav.php'; ?>
 
         <main class="card hero">
             <div class="page-head">

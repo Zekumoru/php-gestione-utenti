@@ -25,14 +25,7 @@ $rows = $stmt->fetchAll(mode: PDO::FETCH_ASSOC);
 
 <body>
     <div class="app-shell">
-        <header class="top-nav">
-            <div class="brand">Gestione Utenti</div>
-            <nav class="nav-links">
-                <a class="nav-link" href="../../index.php">Home</a>
-                <a class="nav-link" href="crea_utente.php">Crea Utente</a>
-                <a class="nav-link active" href="lista_utenti.php">Lista Utenti</a>
-            </nav>
-        </header>
+        <?php include __DIR__ . '/../../components/main-nav.php'; ?>
 
         <main class="card">
             <div class="page-head">
