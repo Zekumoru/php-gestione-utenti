@@ -1,5 +1,5 @@
 <?php
-require_once '../db/conn.php';
+require_once '../../db/conn.php';
 
 if ($_POST) {
     $nome = $_POST['nome'];
@@ -22,7 +22,7 @@ if ($_POST) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../style.css">
     <title>Crea Utente</title>
 </head>
 
@@ -31,7 +31,7 @@ if ($_POST) {
         <header class="top-nav">
             <div class="brand">Gestione Utenti</div>
             <nav class="nav-links">
-                <a class="nav-link" href="../index.php">Home</a>
+                <a class="nav-link" href="../../index.php">Home</a>
                 <a class="nav-link active" href="crea_utente.php">Crea Utente</a>
                 <a class="nav-link" href="lista_utenti.php">Lista Utenti</a>
             </nav>

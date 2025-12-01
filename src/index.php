@@ -18,8 +18,8 @@ require_once "db/conn.php";
             <div class="brand">Gestione Utenti</div>
             <nav class="nav-links">
                 <a class="nav-link active" href="index.php">Home</a>
-                <a class="nav-link" href="./pages/crea_utente.php">Crea Utente</a>
-                <a class="nav-link" href="./pages/lista_utenti.php">Lista Utenti</a>
+                <a class="nav-link" href="./pages/utente/crea_utente.php">Crea Utente</a>
+                <a class="nav-link" href="./pages/utente/lista_utenti.php">Lista Utenti</a>
             </nav>
         </header>
 
@@ -30,8 +30,8 @@ require_once "db/conn.php";
             </div>
 
             <div class="pill-grid">
-                <a class="action-link" href="./pages/crea_utente.php">➕ Crea un nuovo utente</a>
-                <a class="action-link secondary" href="./pages/lista_utenti.php">📋 Vai alla lista</a>
+                <a class="action-link" href="./pages/utente/crea_utente.php">➕ Crea un nuovo utente</a>
+                <a class="action-link secondary" href="./pages/utente/lista_utenti.php">📋 Vai alla lista</a>
             </div>
         </main>
     </div>
