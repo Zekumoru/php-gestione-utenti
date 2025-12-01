@@ -28,6 +28,15 @@ try {
             telefono VARCHAR (15),	
             email VARCHAR(255)
         );
+
+        CREATE TABLE IF NOT EXISTS indirizzi (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            utente_id INT NOT NULL,
+            via VARCHAR(100),
+            citta VARCHAR(100),
+            cap CHAR(5),
+            FOREIGN KEY (utente_id) REFERENCES utenti(id) ON DELETE CASCADE
+        );
     ");
 
     if (!$tableExistsBefore) {
