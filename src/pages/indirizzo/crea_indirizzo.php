@@ -46,11 +46,27 @@ if ($_POST) {
 
             <form method="POST" action="">
                 <div class="form-grid">
-                    <input class="input-field" type="number" name="utente_id" placeholder="Utente ID" required>
-                    <input class="input-field" type="text" name="via" placeholder="Via" required>
-                    <input class="input-field" type="number" name="civico" placeholder="Civico" required>
-                    <input class="input-field" type="text" name="citta" placeholder="Citta" required>
-                    <input class="input-field" type="text" name="cap" placeholder="CAP" required>
+                    <div class="form-field">
+                        <label for="utente_id">Utente ID</label>
+                        <input class="input-field" id="utente_id" type="number" name="utente_id" placeholder="Utente ID"
+                            required>
+                    </div>
+                    <div class="form-field">
+                        <label for="via">Via</label>
+                        <input class="input-field" id="via" type="text" name="via" placeholder="Via" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="civico">Civico</label>
+                        <input class="input-field" id="civico" type="number" name="civico" placeholder="Civico" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="citta">Città</label>
+                        <input class="input-field" id="citta" type="text" name="citta" placeholder="Città" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="cap">CAP</label>
+                        <input class="input-field" id="cap" type="text" name="cap" placeholder="CAP" required>
+                    </div>
                 </div>
                 <div><?php echo $error_msg ?></div>
                 <div class="actions">

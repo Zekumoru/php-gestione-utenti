@@ -158,9 +158,20 @@ form {
 }
 
 .form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 14px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-field label {
+    font-size: 13px;
+    color: var(--muted);
 }
 
 .input-field {
@@ -222,15 +233,17 @@ form {
 
 .table-wrap {
     border-radius: var(--radius);
-    overflow: hidden;
+    overflow: auto;
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
     background: var(--panel);
+    -webkit-overflow-scrolling: touch;
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 640px;
 }
 
 .data-table thead {

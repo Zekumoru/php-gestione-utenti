@@ -49,12 +49,26 @@ if ($_POST) {
 
             <form method="POST" action="">
                 <div class="form-grid">
-                    <input class="input-field" type="text" name="nome" value="<?php echo $utente['nome']; ?>" required>
-                    <input class="input-field" type="text" name="cognome" value="<?php echo $utente['cognome']; ?>"
-                        required>
-                    <input class="input-field" type="email" name="email" value="<?php echo $utente['email']; ?>"
-                        required>
-                    <input class="input-field" type="text" name="telefono" value="<?php echo $utente['telefono']; ?>">
+                    <div class="form-field">
+                        <label for="nome">Nome</label>
+                        <input class="input-field" id="nome" type="text" name="nome"
+                            value="<?php echo $utente['nome']; ?>" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="cognome">Cognome</label>
+                        <input class="input-field" id="cognome" type="text" name="cognome"
+                            value="<?php echo $utente['cognome']; ?>" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email</label>
+                        <input class="input-field" id="email" type="email" name="email"
+                            value="<?php echo $utente['email']; ?>" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="telefono">Telefono</label>
+                        <input class="input-field" id="telefono" type="text" name="telefono"
+                            value="<?php echo $utente['telefono']; ?>">
+                    </div>
                 </div>
                 <div class="actions">
                     <div class="actions-row">

@@ -38,10 +38,23 @@ if ($_POST) {
 
             <form method="POST" action="">
                 <div class="form-grid">
-                    <input class="input-field" type="text" name="nome" placeholder="Nome" required>
-                    <input class="input-field" type="text" name="cognome" placeholder="Cognome" required>
-                    <input class="input-field" type="email" name="email" placeholder="Email" required>
-                    <input class="input-field" type="text" name="telefono" placeholder="Telefono">
+                    <div class="form-field">
+                        <label for="nome">Nome</label>
+                        <input class="input-field" id="nome" type="text" name="nome" placeholder="Nome" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="cognome">Cognome</label>
+                        <input class="input-field" id="cognome" type="text" name="cognome" placeholder="Cognome"
+                            required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email</label>
+                        <input class="input-field" id="email" type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="telefono">Telefono</label>
+                        <input class="input-field" id="telefono" type="text" name="telefono" placeholder="Telefono">
+                    </div>
                 </div>
                 <div class="actions">
                     <button class="btn" type="submit">Crea Utente</button>

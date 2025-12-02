@@ -50,14 +50,31 @@ if ($_POST) {
 
             <form method="POST" action="">
                 <div class="form-grid">
-                    <input class="input-field" type="number" name="utente_id"
-                        value="<?php echo $indirizzo['utente_id']; ?>" disabled required>
-                    <input class="input-field" type="text" name="via" value="<?php echo $indirizzo['via']; ?>" required>
-                    <input class="input-field" type="number" name="civico" value="<?php echo $indirizzo['civico']; ?>"
-                        required>
-                    <input class="input-field" type="text" name="citta" value="<?php echo $indirizzo['citta']; ?>"
-                        required>
-                    <input class="input-field" type="text" name="cap" value="<?php echo $indirizzo['cap']; ?>" required>
+                    <div class="form-field">
+                        <label for="utente_id">Utente ID</label>
+                        <input class="input-field" id="utente_id" type="number" name="utente_id"
+                            value="<?php echo $indirizzo['utente_id']; ?>" disabled required>
+                    </div>
+                    <div class="form-field">
+                        <label for="via">Via</label>
+                        <input class="input-field" id="via" type="text" name="via"
+                            value="<?php echo $indirizzo['via']; ?>" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="civico">Civico</label>
+                        <input class="input-field" id="civico" type="number" name="civico"
+                            value="<?php echo $indirizzo['civico']; ?>" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="citta">Città</label>
+                        <input class="input-field" id="citta" type="text" name="citta"
+                            value="<?php echo $indirizzo['citta']; ?>" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="cap">CAP</label>
+                        <input class="input-field" id="cap" type="text" name="cap"
+                            value="<?php echo $indirizzo['cap']; ?>" required>
+                    </div>
                 </div>
                 <div><?php echo $error_msg ?></div>
                 <div class="actions">
