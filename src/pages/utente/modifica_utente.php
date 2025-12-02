@@ -21,7 +21,7 @@ if ($_POST) {
             telefono = '$telefono' 
             WHERE id = $id";
 
-    $conn->exec($sql);
+    $conn->prepare($sql)->execute();
     header("Location: lista_utenti.php");
     exit;
 }
@@ -50,8 +50,10 @@ if ($_POST) {
             <form method="POST" action="">
                 <div class="form-grid">
                     <input class="input-field" type="text" name="nome" value="<?php echo $utente['nome']; ?>" required>
-                    <input class="input-field" type="text" name="cognome" value="<?php echo $utente['cognome']; ?>" required>
-                    <input class="input-field" type="email" name="email" value="<?php echo $utente['email']; ?>" required>
+                    <input class="input-field" type="text" name="cognome" value="<?php echo $utente['cognome']; ?>"
+                        required>
+                    <input class="input-field" type="email" name="email" value="<?php echo $utente['email']; ?>"
+                        required>
                     <input class="input-field" type="text" name="telefono" value="<?php echo $utente['telefono']; ?>">
                 </div>
                 <div class="actions">

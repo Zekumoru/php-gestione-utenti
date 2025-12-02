@@ -10,7 +10,7 @@ if ($_POST) {
     $sql = "INSERT INTO utenti (nome, cognome, email, telefono) 
             VALUES ('$nome', '$cognome', '$email', '$telefono')";
 
-    $conn->exec($sql);
+    $conn->prepare($sql)->execute();
     header("Location: lista_utenti.php");
     exit;
 }

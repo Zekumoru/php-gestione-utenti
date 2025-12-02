@@ -33,6 +33,7 @@ try {
             id INT AUTO_INCREMENT PRIMARY KEY,
             utente_id INT NOT NULL,
             via VARCHAR(100),
+            civico INT,
             citta VARCHAR(100),
             cap CHAR(5),
             FOREIGN KEY (utente_id) REFERENCES utenti(id) ON DELETE CASCADE

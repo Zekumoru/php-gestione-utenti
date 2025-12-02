@@ -36,6 +36,16 @@ $links = [
         'label' => 'Lista Utenti',
         'href' => $baseHref . '/pages/utente/lista_utenti.php',
         'active' => in_array($currentFile, ['lista_utenti.php', 'modifica_utente.php'], true),
+    ],
+    [
+        'label' => 'Crea Indirizzo',
+        'href' => $baseHref . '/pages/indirizzo/crea_indirizzo.php',
+        'active' => $currentFile === 'crea_indirizzo.php',
+    ],
+    [
+        'label' => 'Lista Indirizzi',
+        'href' => $baseHref . '/pages/indirizzo/lista_indirizzi.php',
+        'active' => $currentFile === 'lista_indirizzi.php',
     ]
 ];
 ?>
