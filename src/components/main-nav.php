@@ -45,7 +45,7 @@ $links = [
     [
         'label' => 'Lista Indirizzi',
         'href' => $baseHref . '/pages/indirizzo/lista_indirizzi.php',
-        'active' => $currentFile === 'lista_indirizzi.php',
+        'active' => in_array($currentFile, ['lista_indirizzi.php', 'modifica_indirizzo.php'], true),
     ]
 ];
 ?>
