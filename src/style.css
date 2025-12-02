@@ -146,9 +146,19 @@ p {
     color: #fef3c7;
 }
 
+.action-link.danger {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fee2e2;
+}
+
 .action-link:hover {
     border-color: rgba(255, 255, 255, 0.14);
     transform: translateY(-1px);
+}
+
+.action-link.danger:hover {
+    background: rgba(239, 68, 68, 0.28);
+    color: #fff;
 }
 
 form {

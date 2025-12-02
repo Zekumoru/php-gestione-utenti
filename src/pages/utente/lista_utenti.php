@@ -62,7 +62,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="actions-row">
                                             <a class="action-link"
                                                 href="modifica_utente.php?id=<?php echo $row['id']; ?>">Modifica</a>
-                                            <a class="action-link secondary"
+                                            <a class="action-link danger"
                                                 href="lista_utenti.php?elimina=<?php echo $row['id']; ?>">Elimina</a>
                                         </div>
                                     </td>
