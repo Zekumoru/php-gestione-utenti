@@ -9,24 +9,26 @@ try {
     $conn = new PDO("mysql:host=$servername", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Vedere se la tabella "utenti" esisteva già
-    $stmt = $conn->prepare("
-        SELECT COUNT(*) FROM information_schema.tables
-        WHERE table_schema = :db AND table_name = 'utenti';
-    ");
-    $stmt->execute([':db' => $dbname]);
-    $tableExistsBefore = $stmt->fetchColumn() > 0;
-
     $conn->exec("
         CREATE DATABASE IF NOT EXISTS $dbname;
         USE $dbname;
 
         CREATE TABLE IF NOT EXISTS utenti (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            nome VARCHAR(100),
-            cognome VARCHAR(100),
+            nome VARCHAR(100) NOT NULL,
+            cognome VARCHAR(100) NOT NULL,
             telefono VARCHAR (15),	
-            email VARCHAR(255)
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS cookies (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            utente_id INT NOT NULL,
+            token VARCHAR(255) NOT NULL UNIQUE,
+            scadenza TIMESTAMP NOT NULL,
+            FOREIGN KEY (utente_id) REFERENCES utenti(id) ON DELETE CASCADE
         );
 
         CREATE TABLE IF NOT EXISTS indirizzi (
@@ -40,13 +42,20 @@ try {
         );
     ");
 
-    if (!$tableExistsBefore) {
-        $conn->exec("
-            INSERT INTO utenti (nome, cognome, email, telefono) VALUES
-                ('Mario', 'Rossi', 'mario.rossi@email.com', '1234567890'),
-                ('Luca', 'Bianchi', 'luca.bianchi@email.com', '0987654321'),
-                ('Anna', 'Verdi', 'anna.verdi@email.com', '5551234567');
-        ");
+    $existingUtenti = (int) $conn->query("SELECT COUNT(*) FROM utenti")->fetchColumn();
+    if ($existingUtenti === 0) {
+        $passwordHash = password_hash('password123', PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO utenti (nome, cognome, email, telefono, password) VALUES (?, ?, ?, ?, ?)");
+        $seedData = [
+            ['Mario', 'Rossi', 'mario.rossi@email.com', '1234567890', $passwordHash],
+            ['Luca', 'Bianchi', 'luca.bianchi@email.com', '0987654321', $passwordHash],
+            ['Anna', 'Verdi', 'anna.verdi@email.com', '5551234567', $passwordHash],
+            ['Demo', 'Admin', 'admin@example.com', '0000000000', $passwordHash],
+        ];
+
+        foreach ($seedData as $row) {
+            $stmt->execute($row);
+        }
     }
 } catch (PDOException $e) {
     echo $e->getMessage();

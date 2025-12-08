@@ -1,5 +1,5 @@
 <?php
-require_once '../../db/conn.php';
+require_once dirname(__DIR__, 2) . '/auth/auth.php';
 
 if (isset($_GET['elimina'])) {
     $id = $_GET['elimina'];

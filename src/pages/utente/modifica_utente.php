@@ -1,29 +1,65 @@
 <?php
-require_once '../../db/conn.php';
+require_once dirname(__DIR__, 2) . '/auth/auth.php';
+require_once dirname(__DIR__, 2) . '/models/User.php';
+require_once dirname(__DIR__, 2) . '/repositories/UserRepository.php';
 
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$userRepository = new UserRepository($conn);
 
-$sql = "SELECT * FROM utenti WHERE id = $id";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
+$stmt = $conn->prepare("SELECT * FROM utenti WHERE id = ?");
+$stmt->execute([$id]);
 $utente = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($_POST) {
-    $nome = $_POST['nome'];
-    $cognome = $_POST['cognome'];
-    $email = $_POST['email'];
-    $telefono = $_POST['telefono'];
-
-    $sql = "UPDATE utenti SET 
-            nome = '$nome', 
-            cognome = '$cognome', 
-            email = '$email', 
-            telefono = '$telefono' 
-            WHERE id = $id";
-
-    $conn->prepare($sql)->execute();
+if (!$utente) {
     header("Location: lista_utenti.php");
     exit;
+}
+
+$errors = [];
+$dto = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $dto = new UpdateUserDTO($_POST);
+
+    if ($dto->nome === '') {
+        $errors['nome'] = "Il nome è obbligatorio";
+    }
+    if ($dto->cognome === '') {
+        $errors['cognome'] = "Il cognome è obbligatorio";
+    }
+    if ($dto->email === '' || !filter_var($dto->email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "Inserisci un'email valida";
+    }
+
+    if ($dto->password !== '' && strlen($dto->password) < 8) {
+        $errors['password'] = "Minimo 8 caratteri";
+    }
+
+    $emailOwnerStmt = $conn->prepare("SELECT id FROM utenti WHERE email = ? AND id <> ?");
+    $emailOwnerStmt->execute([$dto->email, $id]);
+    if ($emailOwnerStmt->fetch()) {
+        $errors['email'] = "Email già in uso da un altro account";
+    }
+
+    if (empty($errors)) {
+        $newPassword = null;
+        if ($dto->password !== '') {
+            $dto->hashPassword();
+            $newPassword = $dto->password;
+        }
+
+        $userRepository->updateOne($id, $dto, $newPassword);
+        header("Location: lista_utenti.php");
+        exit;
+    }
+} else {
+    $dto = new UpdateUserDTO([
+        'nome' => $utente['nome'],
+        'cognome' => $utente['cognome'],
+        'email' => $utente['email'],
+        'telefono' => $utente['telefono'] ?? '',
+        'password' => '',
+    ]);
 }
 ?>
 
@@ -47,27 +83,48 @@ if ($_POST) {
                 <p class="muted">Aggiorna le informazioni del profilo selezionato.</p>
             </div>
 
+            <?php if (!empty($errors)): ?>
+                <div class="alert error">Correggi i campi evidenziati.</div>
+            <?php endif; ?>
+
             <form method="POST" action="">
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="nome">Nome</label>
                         <input class="input-field" id="nome" type="text" name="nome"
-                            value="<?php echo $utente['nome']; ?>" required>
+                            value="<?php echo htmlspecialchars($dto ? $dto->nome : $utente['nome']); ?>" required>
+                        <?php if (isset($errors['nome'])): ?>
+                            <p class="field-error"><?php echo htmlspecialchars($errors['nome']); ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="form-field">
                         <label for="cognome">Cognome</label>
                         <input class="input-field" id="cognome" type="text" name="cognome"
-                            value="<?php echo $utente['cognome']; ?>" required>
+                            value="<?php echo htmlspecialchars($dto ? $dto->cognome : $utente['cognome']); ?>" required>
+                        <?php if (isset($errors['cognome'])): ?>
+                            <p class="field-error"><?php echo htmlspecialchars($errors['cognome']); ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="form-field">
                         <label for="email">Email</label>
                         <input class="input-field" id="email" type="email" name="email"
-                            value="<?php echo $utente['email']; ?>" required>
+                            value="<?php echo htmlspecialchars($dto ? $dto->email : $utente['email']); ?>" required>
+                        <?php if (isset($errors['email'])): ?>
+                            <p class="field-error"><?php echo htmlspecialchars($errors['email']); ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="form-field">
                         <label for="telefono">Telefono</label>
                         <input class="input-field" id="telefono" type="text" name="telefono"
-                            value="<?php echo $utente['telefono']; ?>">
+                            value="<?php echo htmlspecialchars($dto ? ($dto->telefono ?? '') : ($utente['telefono'] ?? '')); ?>">
+                    </div>
+                    <div class="form-field">
+                        <label for="password">Nuova Password (opzionale)</label>
+                        <input class="input-field" id="password" type="password" name="password"
+                            placeholder="Lascia vuoto per mantenere quella attuale">
+                        <?php if (isset($errors['password'])): ?>
+                            <p class="field-error"><?php echo htmlspecialchars($errors['password']); ?></p>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="actions">

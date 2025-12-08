@@ -48,15 +48,33 @@ $links = [
         'active' => in_array($currentFile, ['lista_indirizzi.php', 'modifica_indirizzo.php'], true),
     ]
 ];
+
+$isAuth ??= false;
+$currentUser ??= null;
+$userName = $currentUser ? $currentUser->fullName() : 'Ospite';
 ?>
 
 <header class="top-nav">
     <div class="brand">Gestione Utenti</div>
-    <nav class="nav-links">
-        <?php foreach ($links as $link): ?>
-            <a class="nav-link<?php echo $link['active'] ? ' active' : ''; ?>" href="<?php echo $link['href']; ?>">
-                <?php echo $link['label']; ?>
-            </a>
-        <?php endforeach; ?>
-    </nav>
+    <div class="nav-rail">
+        <?php if ($isAuth): ?>
+            <nav class="nav-links">
+                <?php foreach ($links as $link): ?>
+                    <a class="nav-link<?php echo $link['active'] ? ' active' : ''; ?>" href="<?php echo $link['href']; ?>">
+                        <?php echo $link['label']; ?>
+                    </a>
+                <?php endforeach; ?>
+            </nav>
+        <?php endif; ?>
+
+        <div class="nav-actions">
+            <?php if ($isAuth): ?>
+                <span class="user-pill">👤 <?php echo htmlspecialchars($userName); ?></span>
+                <a class="nav-cta" href="<?php echo $baseHref . '/logout.php'; ?>">Esci</a>
+            <?php else: ?>
+                <a class="nav-cta ghost" href="<?php echo $baseHref . '/login.php'; ?>">Accedi</a>
+                <a class="nav-cta" href="<?php echo $baseHref . '/sign-up.php'; ?>">Registrati</a>
+            <?php endif; ?>
+        </div>
+    </div>
 </header>

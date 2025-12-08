@@ -1,18 +1,37 @@
 <?php
-require_once '../../db/conn.php';
+require_once dirname(__DIR__, 2) . '/auth/auth.php';
 
-if ($_POST) {
-    $nome = $_POST['nome'];
-    $cognome = $_POST['cognome'];
-    $email = $_POST['email'];
-    $telefono = $_POST['telefono'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome = trim($_POST['nome']);
+    $cognome = trim($_POST['cognome']);
+    $email = strtolower(trim($_POST['email']));
+    $telefono = trim($_POST['telefono']);
+    $password = $_POST['password'];
 
-    $sql = "INSERT INTO utenti (nome, cognome, email, telefono) 
-            VALUES ('$nome', '$cognome', '$email', '$telefono')";
+    if ($password === '' || strlen($password) < 8) {
+        $error = "La password deve avere almeno 8 caratteri.";
+    }
 
-    $conn->prepare($sql)->execute();
-    header("Location: lista_utenti.php");
-    exit;
+    $existing = $conn->prepare("SELECT id FROM utenti WHERE email = ?");
+    $existing->execute([$email]);
+    if ($existing->fetch()) {
+        $error = "Email già registrata.";
+    }
+
+    if (!isset($error)) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO utenti (nome, cognome, email, telefono, password) VALUES (:nome, :cognome, :email, :telefono, :password)");
+        $stmt->execute([
+            ':nome' => $nome,
+            ':cognome' => $cognome,
+            ':email' => $email,
+            ':telefono' => $telefono ?: null,
+            ':password' => $hashedPassword,
+        ]);
+
+        header("Location: lista_utenti.php");
+        exit;
+    }
 }
 ?>
 
@@ -36,6 +55,10 @@ if ($_POST) {
                 <p class="muted">Compila i campi per aggiungere rapidamente un nuovo profilo.</p>
             </div>
 
+            <?php if (isset($error)): ?>
+                <div class="alert error"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+
             <form method="POST" action="">
                 <div class="form-grid">
                     <div class="form-field">
@@ -54,6 +77,10 @@ if ($_POST) {
                     <div class="form-field">
                         <label for="telefono">Telefono</label>
                         <input class="input-field" id="telefono" type="text" name="telefono" placeholder="Telefono">
+                    </div>
+                    <div class="form-field">
+                        <label for="password">Password</label>
+                        <input class="input-field" id="password" type="password" name="password" placeholder="Almeno 8 caratteri" required>
                     </div>
                 </div>
                 <div class="actions">

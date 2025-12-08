@@ -1,5 +1,5 @@
 <?php
-require_once "db/conn.php";
+require_once __DIR__ . '/auth/auth.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +20,9 @@ require_once "db/conn.php";
             <div class="page-head">
                 <h1 class="page-title">Gestisci gli utenti con stile</h1>
                 <p class="muted">Crea, consulta e aggiorna i profili della tua organizzazione in pochi click.</p>
+                <?php if (isset($currentUser) && $currentUser): ?>
+                    <p class="muted subtle-badge">Accesso eseguito come <?php echo htmlspecialchars($currentUser->fullName()); ?></p>
+                <?php endif; ?>
             </div>
 
             <div class="pill-grid">

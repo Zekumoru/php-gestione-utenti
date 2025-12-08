@@ -1,16 +1,16 @@
 <?php
-require_once '../../db/conn.php';
+require_once dirname(__DIR__, 2) . '/auth/auth.php';
+require_once dirname(__DIR__, 2) . '/repositories/AddressRepository.php';
+require_once dirname(__DIR__, 2) . '/repositories/UserRepository.php';
+
+$addressRepository = new AddressRepository($conn);
+$userRepository = new UserRepository($conn);
 
 if (isset($_GET['elimina'])) {
-    $id = $_GET['elimina'];
-    $sql = "DELETE FROM indirizzi WHERE id = $id";
-    $conn->prepare($sql)->execute();
+    $addressRepository->deleteById((int) $_GET['elimina']);
 }
 
-$sql = "SELECT i.*, u.nome, u.cognome FROM indirizzi i INNER JOIN utenti u ON i.utente_id = u.id;";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$rows = $addressRepository->findAll();
 ?>
 
 <!DOCTYPE html>
@@ -52,18 +52,19 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </tr>
                         <?php else: ?>
                             <?php foreach ($rows as $row): ?>
+                                <?php $owner = $userRepository->findById($row->utente_id); ?>
                                 <tr>
-                                    <td><?php echo $row['nome'] . ' ' . $row['cognome']; ?></td>
-                                    <td><?php echo $row['via']; ?></td>
-                                    <td><?php echo $row['civico']; ?></td>
-                                    <td><?php echo $row['citta']; ?></td>
-                                    <td><?php echo $row['cap']; ?></td>
+                                    <td><?php echo htmlspecialchars($owner ? $owner->fullName() : ('ID ' . $row->utente_id)); ?></td>
+                                    <td><?php echo htmlspecialchars($row->via); ?></td>
+                                    <td><?php echo $row->civico; ?></td>
+                                    <td><?php echo htmlspecialchars($row->citta); ?></td>
+                                    <td><?php echo htmlspecialchars($row->cap); ?></td>
                                     <td>
                                         <div class="actions-row">
                                             <a class="action-link"
-                                                href="modifica_indirizzo.php?id=<?php echo $row['id']; ?>">Modifica</a>
+                                                href="modifica_indirizzo.php?id=<?php echo $row->id; ?>">Modifica</a>
                                             <a class="action-link danger"
-                                                href="lista_indirizzi.php?elimina=<?php echo $row['id']; ?>">Elimina</a>
+                                                href="lista_indirizzi.php?elimina=<?php echo $row->id; ?>">Elimina</a>
                                         </div>
                                     </td>
                                 </tr>

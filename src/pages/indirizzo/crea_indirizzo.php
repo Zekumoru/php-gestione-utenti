@@ -1,24 +1,29 @@
 <?php
-require_once '../../db/conn.php';
+require_once dirname(__DIR__, 2) . '/auth/auth.php';
+require_once dirname(__DIR__, 2) . '/repositories/AddressRepository.php';
+require_once dirname(__DIR__, 2) . '/models/Address.php';
 
 $error_msg = null;
+$addressRepository = new AddressRepository($conn);
+$dto = new CreateIndirizzoDTO([]);
 
-if ($_POST) {
-    $utente_id = $_POST['utente_id'];
-    $via = $_POST['via'];
-    $civico = $_POST['civico'];
-    $citta = $_POST['citta'];
-    $cap = $_POST['cap'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $dto = new CreateIndirizzoDTO($_POST);
 
-    $sql = "INSERT INTO indirizzi (utente_id, via, civico, citta, cap)
-            VALUES ($utente_id, '$via', $civico, '$citta', '$cap');";
+    if ($dto->utente_id <= 0) {
+        $error_msg = "Utente non valido";
+    } elseif ($dto->via === '' || $dto->citta === '' || $dto->cap === '' || $dto->civico <= 0) {
+        $error_msg = "Tutti i campi sono obbligatori.";
+    }
 
-    try {
-        $conn->prepare($sql)->execute();
-        header("Location: lista_indirizzi.php");
-        exit;
-    } catch (PDOException $e) {
-        $error_msg = $e->getMessage();
+    if (!$error_msg) {
+        try {
+            $addressRepository->insertOne($dto);
+            header("Location: lista_indirizzi.php");
+            exit;
+        } catch (PDOException $e) {
+            $error_msg = $e->getMessage();
+        }
     }
 }
 
@@ -49,26 +54,31 @@ if ($_POST) {
                     <div class="form-field">
                         <label for="utente_id">Utente ID</label>
                         <input class="input-field" id="utente_id" type="number" name="utente_id" placeholder="Utente ID"
-                            required>
+                            value="<?php echo htmlspecialchars($dto->utente_id); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="via">Via</label>
-                        <input class="input-field" id="via" type="text" name="via" placeholder="Via" required>
+                        <input class="input-field" id="via" type="text" name="via" placeholder="Via"
+                            value="<?php echo htmlspecialchars($dto->via); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="civico">Civico</label>
-                        <input class="input-field" id="civico" type="number" name="civico" placeholder="Civico" required>
+                        <input class="input-field" id="civico" type="number" name="civico" placeholder="Civico"
+                            value="<?php echo htmlspecialchars($dto->civico); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="citta">Città</label>
-                        <input class="input-field" id="citta" type="text" name="citta" placeholder="Città" required>
+                        <input class="input-field" id="citta" type="text" name="citta" placeholder="Città"
+                            value="<?php echo htmlspecialchars($dto->citta); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="cap">CAP</label>
-                        <input class="input-field" id="cap" type="text" name="cap" placeholder="CAP" required>
+                        <input class="input-field" id="cap" type="text" name="cap" placeholder="CAP"
+                            value="<?php echo htmlspecialchars($dto->cap); ?>" required>
                     </div>
                 </div>
-                <div><?php echo $error_msg ?></div>
+                <div><?php echo $error_msg ? '<div class="alert error">' . htmlspecialchars($error_msg) . '</div>' : ''; ?>
+                </div>
                 <div class="actions">
                     <button class="btn" type="submit">Crea Indirizzo</button>
                 </div>

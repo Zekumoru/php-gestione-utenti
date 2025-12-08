@@ -1,30 +1,45 @@
 <?php
-require_once '../../db/conn.php';
+require_once dirname(__DIR__, 2) . '/auth/auth.php';
+require_once dirname(__DIR__, 2) . '/repositories/AddressRepository.php';
+require_once dirname(__DIR__, 2) . '/models/Address.php';
 
 $error_msg = null;
+$addressRepository = new AddressRepository($conn);
 
-$id = $_GET['id'];
-$sql = "SELECT * FROM indirizzi WHERE id = $id;";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$indirizzo = $stmt->fetch(PDO::FETCH_ASSOC);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$indirizzo = $addressRepository->findById($id);
 
-if ($_POST) {
-    $via = $_POST['via'];
-    $civico = $_POST['civico'];
-    $citta = $_POST['citta'];
-    $cap = $_POST['cap'];
-
-    $sql = "UPDATE indirizzi SET
-            via = '$via',
-            civico = $civico,
-            citta = '$citta',
-            cap = '$cap'
-            WHERE id = $id;";
-
-    $conn->prepare($sql)->execute();
+if (!$indirizzo) {
     header("Location: lista_indirizzi.php");
     exit;
+}
+
+$dto = new UpdateIndirizzoDTO([
+    'utente_id' => $indirizzo->utente_id,
+    'via' => $indirizzo->via,
+    'civico' => $indirizzo->civico,
+    'citta' => $indirizzo->citta,
+    'cap' => $indirizzo->cap,
+]);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $dto = new UpdateIndirizzoDTO($_POST);
+
+    if ($dto->utente_id <= 0) {
+        $error_msg = "Utente non valido";
+    } elseif ($dto->via === '' || $dto->citta === '' || $dto->cap === '' || $dto->civico <= 0) {
+        $error_msg = "Tutti i campi sono obbligatori.";
+    }
+
+    if (!$error_msg) {
+        try {
+            $addressRepository->updateOne($id, $dto);
+            header("Location: lista_indirizzi.php");
+            exit;
+        } catch (PDOException $e) {
+            $error_msg = $e->getMessage();
+        }
+    }
 }
 ?>
 
@@ -48,35 +63,38 @@ if ($_POST) {
                 <p class="muted">Aggiorna le informazioni dell'indirizzo selezionato.</p>
             </div>
 
+            <?php if ($error_msg): ?>
+                <div class="alert error"><?php echo htmlspecialchars($error_msg); ?></div>
+            <?php endif; ?>
+
             <form method="POST" action="">
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="utente_id">Utente ID</label>
                         <input class="input-field" id="utente_id" type="number" name="utente_id"
-                            value="<?php echo $indirizzo['utente_id']; ?>" disabled required>
+                            value="<?php echo htmlspecialchars($dto->utente_id); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="via">Via</label>
                         <input class="input-field" id="via" type="text" name="via"
-                            value="<?php echo $indirizzo['via']; ?>" required>
+                            value="<?php echo htmlspecialchars($dto->via); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="civico">Civico</label>
                         <input class="input-field" id="civico" type="number" name="civico"
-                            value="<?php echo $indirizzo['civico']; ?>" required>
+                            value="<?php echo htmlspecialchars($dto->civico); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="citta">Città</label>
                         <input class="input-field" id="citta" type="text" name="citta"
-                            value="<?php echo $indirizzo['citta']; ?>" required>
+                            value="<?php echo htmlspecialchars($dto->citta); ?>" required>
                     </div>
                     <div class="form-field">
                         <label for="cap">CAP</label>
                         <input class="input-field" id="cap" type="text" name="cap"
-                            value="<?php echo $indirizzo['cap']; ?>" required>
+                            value="<?php echo htmlspecialchars($dto->cap); ?>" required>
                     </div>
                 </div>
-                <div><?php echo $error_msg ?></div>
                 <div class="actions">
                     <div class="actions-row">
                         <a class="action-link secondary" href="lista_indirizzi.php">Annulla</a>
