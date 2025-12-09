@@ -59,9 +59,9 @@ $users = $userRepository->findAll();
                                     <td><?php echo htmlspecialchars($user->ruolo_nome ?? '—'); ?></td>
                                     <td>
                                         <div class="actions-row">
-                                            <a class="action-link"
+                                            <a class="btn secondary"
                                                 href="modifica_utente.php?id=<?php echo $user->id; ?>">Modifica</a>
-                                            <a class="action-link danger"
+                                            <a class="btn danger"
                                                 href="lista_utenti.php?elimina=<?php echo $user->id; ?>">Elimina</a>
                                         </div>
                                     </td>

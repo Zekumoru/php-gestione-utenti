@@ -54,16 +54,17 @@ $rows = $addressRepository->findAll();
                             <?php foreach ($rows as $row): ?>
                                 <?php $owner = $userRepository->findById($row->utente_id); ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($owner ? $owner->fullName() : ('ID ' . $row->utente_id)); ?></td>
+                                    <td><?php echo htmlspecialchars($owner ? $owner->fullName() : ('ID ' . $row->utente_id)); ?>
+                                    </td>
                                     <td><?php echo htmlspecialchars($row->via); ?></td>
                                     <td><?php echo $row->civico; ?></td>
                                     <td><?php echo htmlspecialchars($row->citta); ?></td>
                                     <td><?php echo htmlspecialchars($row->cap); ?></td>
                                     <td>
                                         <div class="actions-row">
-                                            <a class="action-link"
+                                            <a class="btn secondary"
                                                 href="modifica_indirizzo.php?id=<?php echo $row->id; ?>">Modifica</a>
-                                            <a class="action-link danger"
+                                            <a class="btn danger"
                                                 href="lista_indirizzi.php?elimina=<?php echo $row->id; ?>">Elimina</a>
                                         </div>
                                     </td>

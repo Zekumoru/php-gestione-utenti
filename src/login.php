@@ -68,14 +68,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="form-field">
                         <label for="password">Password</label>
-                        <input class="input-field" id="password" type="password" name="password"
-                            placeholder="••••••••" required>
+                        <input class="input-field" id="password" type="password" name="password" placeholder="••••••••"
+                            required>
                     </div>
                 </div>
 
                 <div class="auth-actions">
-                    <button class="btn" type="submit">Accedi</button>
-                    <a class="action-link secondary" href="<?php echo $signupUrl; ?>">Crea un account</a>
+                    <button class="btn primary" type="submit">Accedi</button>
+                    <a class="btn secondary" href="<?php echo $signupUrl; ?>">Crea un
+                        account</a>
                 </div>
             </form>
         </main>

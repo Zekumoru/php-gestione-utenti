@@ -102,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="nome">Nome</label>
-                        <input class="input-field" id="nome" type="text" name="nome"
-                            placeholder="Mario" value="<?php echo htmlspecialchars($nome); ?>" required>
+                        <input class="input-field" id="nome" type="text" name="nome" placeholder="Mario"
+                            value="<?php echo htmlspecialchars($nome); ?>" required>
                         <?php if (isset($errors['nome'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['nome']); ?></p>
                         <?php endif; ?>
@@ -111,8 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-field">
                         <label for="cognome">Cognome</label>
-                        <input class="input-field" id="cognome" type="text" name="cognome"
-                            placeholder="Rossi" value="<?php echo htmlspecialchars($cognome); ?>" required>
+                        <input class="input-field" id="cognome" type="text" name="cognome" placeholder="Rossi"
+                            value="<?php echo htmlspecialchars($cognome); ?>" required>
                         <?php if (isset($errors['cognome'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['cognome']); ?></p>
                         <?php endif; ?>
@@ -120,8 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-field">
                         <label for="email">Email</label>
-                        <input class="input-field" id="email" type="email" name="email"
-                            placeholder="tua@email.com" value="<?php echo htmlspecialchars($email); ?>" required>
+                        <input class="input-field" id="email" type="email" name="email" placeholder="tua@email.com"
+                            value="<?php echo htmlspecialchars($email); ?>" required>
                         <?php if (isset($errors['email'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['email']); ?></p>
                         <?php endif; ?>
@@ -129,8 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-field">
                         <label for="telefono">Telefono (opzionale)</label>
-                        <input class="input-field" id="telefono" type="text" name="telefono"
-                            placeholder="1234567890" value="<?php echo htmlspecialchars($telefono); ?>">
+                        <input class="input-field" id="telefono" type="text" name="telefono" placeholder="1234567890"
+                            value="<?php echo htmlspecialchars($telefono); ?>">
                     </div>
 
                     <div class="form-field">
@@ -144,8 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="auth-actions">
-                    <button class="btn" type="submit">Registrati</button>
-                    <a class="action-link secondary" href="<?php echo $loginUrl; ?>">Hai già un account?</a>
+                    <button class="btn primary" type="submit">Registrati</button>
+                    <a class="btn secondary" href="<?php echo $loginUrl; ?>">Hai già un
+                        account?</a>
                 </div>
             </form>
         </main>

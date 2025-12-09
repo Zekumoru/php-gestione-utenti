@@ -129,8 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select class="input-field" id="ruolo_id" name="ruolo_id">
                             <option value="">Senza ruolo</option>
                             <?php foreach ($ruoli as $ruolo): ?>
-                                <option value="<?php echo $ruolo->id; ?>"
-                                    <?php echo (string) ($dto?->ruolo_id ?? '') === (string) $ruolo->id ? 'selected' : ''; ?>>
+                                <option value="<?php echo $ruolo->id; ?>" <?php echo (string) ($dto?->ruolo_id ?? '') === (string) $ruolo->id ? 'selected' : ''; ?>>
                                     <?php echo htmlspecialchars($ruolo->nome_ruolo); ?>
                                 </option>
                             <?php endforeach; ?>
@@ -150,8 +149,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="actions">
                     <div class="actions-row">
-                        <a class="action-link secondary" href="lista_utenti.php">Annulla</a>
-                        <button class="btn" type="submit">Aggiorna Utente</button>
+                        <a class="btn secondary" href="lista_utenti.php">Annulla</a>
+                        <button class="btn primary" type="submit">Aggiorna Utente</button>
                     </div>
                 </div>
             </form>

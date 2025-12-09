@@ -1,5 +1,138 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+/* ---------- START CSS RESET ---------- */
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol,
+ul {
+    list-style: none;
+}
+blockquote,
+q {
+    quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* ---------- END CSS RESET ---------- */
+
 :root {
     --bg: #070e1d;
     --panel: #0f172a;
@@ -43,6 +176,7 @@ body {
 
 a {
     color: inherit;
+    text-decoration: none;
 }
 
 p {
@@ -118,30 +252,6 @@ p {
     gap: 10px;
 }
 
-.nav-cta {
-    padding: 10px 13px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 700;
-    color: #041525;
-    background: linear-gradient(135deg, var(--accent), #22d3ee);
-    box-shadow: 0 10px 30px rgba(14, 165, 233, 0.25);
-    border: 1px solid transparent;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-}
-
-.nav-cta:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 12px 32px rgba(14, 165, 233, 0.35);
-}
-
-.nav-cta.ghost {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text);
-    box-shadow: none;
-    border-color: var(--border);
-}
-
 .user-pill {
     display: inline-flex;
     align-items: center;
@@ -194,40 +304,6 @@ p {
     margin-top: 12px;
 }
 
-.action-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 13px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    background: rgba(14, 165, 233, 0.12);
-    color: #e0f2fe;
-    border: 1px solid transparent;
-    transition: all 0.18s ease;
-}
-
-.action-link.secondary {
-    background: rgba(245, 158, 11, 0.14);
-    color: #fef3c7;
-}
-
-.action-link.danger {
-    background: rgba(239, 68, 68, 0.18);
-    color: #fee2e2;
-}
-
-.action-link:hover {
-    border-color: rgba(255, 255, 255, 0.14);
-    transform: translateY(-1px);
-}
-
-.action-link.danger:hover {
-    background: rgba(239, 68, 68, 0.28);
-    color: #fff;
-}
-
 form {
     display: flex;
     flex-direction: column;
@@ -258,6 +334,7 @@ form {
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: 12px;
+    font-size: 13px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -291,19 +368,41 @@ select.input-field {
 }
 
 .btn {
+    font-size: 12px;
     padding: 12px 16px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, var(--accent), #22d3ee);
     color: #041525;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+    border: 1px solid transparent;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn:hover {
     transform: translateY(-1px);
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, var(--accent), #22d3ee);
+    box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+}
+
+.btn.secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    box-shadow: none;
+    border-color: var(--border);
+}
+
+.btn.danger {
+    background: rgba(199, 39, 39, 0.695);
+    color: var(--text);
+    box-shadow: none;
+    border-color: var(--border);
+}
+
+.btn.primary:hover {
     box-shadow: 0 12px 32px rgba(14, 165, 233, 0.4);
 }
 

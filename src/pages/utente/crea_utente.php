@@ -84,8 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select class="input-field" id="ruolo_id" name="ruolo_id">
                             <option value="">Senza ruolo</option>
                             <?php foreach ($ruoli as $ruolo): ?>
-                                <option value="<?php echo $ruolo->id; ?>"
-                                    <?php echo (string) $selectedRoleId === (string) $ruolo->id ? 'selected' : ''; ?>>
+                                <option value="<?php echo $ruolo->id; ?>" <?php echo (string) $selectedRoleId === (string) $ruolo->id ? 'selected' : ''; ?>>
                                     <?php echo htmlspecialchars($ruolo->nome_ruolo); ?>
                                 </option>
                             <?php endforeach; ?>
@@ -93,11 +92,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="form-field">
                         <label for="password">Password</label>
-                        <input class="input-field" id="password" type="password" name="password" placeholder="Almeno 8 caratteri" required>
+                        <input class="input-field" id="password" type="password" name="password"
+                            placeholder="Almeno 8 caratteri" required>
                     </div>
                 </div>
                 <div class="actions">
-                    <button class="btn" type="submit">Crea Utente</button>
+                    <button class="btn primary" type="submit">Crea Utente</button>
                 </div>
             </form>
         </main>

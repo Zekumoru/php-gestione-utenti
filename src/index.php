@@ -21,13 +21,14 @@ require_once __DIR__ . '/auth/auth.php';
                 <h1 class="page-title">Gestisci gli utenti con stile</h1>
                 <p class="muted">Crea, consulta e aggiorna i profili della tua organizzazione in pochi click.</p>
                 <?php if (isset($currentUser) && $currentUser): ?>
-                    <p class="muted subtle-badge">Accesso eseguito come <?php echo htmlspecialchars($currentUser->fullName()); ?></p>
+                    <p class="muted subtle-badge">Accesso eseguito come
+                        <?php echo htmlspecialchars($currentUser->fullName()); ?></p>
                 <?php endif; ?>
             </div>
 
             <div class="pill-grid">
-                <a class="action-link" href="./pages/utente/crea_utente.php">➕ Crea un nuovo utente</a>
-                <a class="action-link secondary" href="./pages/utente/lista_utenti.php">📋 Vai alla lista</a>
+                <a class="btn primary" href="./pages/utente/crea_utente.php">➕ Crea un nuovo utente</a>
+                <a class="btn secondary" href="./pages/utente/lista_utenti.php">📋 Vai alla lista</a>
             </div>
         </main>
     </div>

@@ -97,8 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="actions">
                     <div class="actions-row">
-                        <a class="action-link secondary" href="lista_indirizzi.php">Annulla</a>
-                        <button class="btn" type="submit">Aggiorna Indirizzo</button>
+                        <a class="btn secondary" href="lista_indirizzi.php">Annulla</a>
+                        <button class="btn primary" type="submit">Aggiorna Indirizzo</button>
                     </div>
                 </div>
             </form>

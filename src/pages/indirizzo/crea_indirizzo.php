@@ -77,10 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             value="<?php echo htmlspecialchars($dto->cap); ?>" required>
                     </div>
                 </div>
-                <div><?php echo $error_msg ? '<div class="alert error">' . htmlspecialchars($error_msg) . '</div>' : ''; ?>
+                <div>
+                    <?php echo $error_msg ? '<div class="alert error">' . htmlspecialchars($error_msg) . '</div>' : ''; ?>
                 </div>
                 <div class="actions">
-                    <button class="btn" type="submit">Crea Indirizzo</button>
+                    <button class="btn primary" type="submit">Crea Indirizzo</button>
                 </div>
             </form>
         </main>

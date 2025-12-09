@@ -70,10 +70,10 @@ $userName = $currentUser ? $currentUser->fullName() : 'Ospite';
         <div class="nav-actions">
             <?php if ($isAuth): ?>
                 <span class="user-pill">👤 <?php echo htmlspecialchars($userName); ?></span>
-                <a class="nav-cta" href="<?php echo $baseHref . '/logout.php'; ?>">Esci</a>
+                <a class="btn primary" href="<?php echo $baseHref . '/logout.php'; ?>">Esci</a>
             <?php else: ?>
-                <a class="nav-cta ghost" href="<?php echo $baseHref . '/login.php'; ?>">Accedi</a>
-                <a class="nav-cta" href="<?php echo $baseHref . '/sign-up.php'; ?>">Registrati</a>
+                <a class="btn secondary" href="<?php echo $baseHref . '/login.php'; ?>">Accedi</a>
+                <a class="btn primary" href="<?php echo $baseHref . '/sign-up.php'; ?>">Registrati</a>
             <?php endif; ?>
         </div>
     </div>
