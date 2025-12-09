@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="nome">Nome</label>
-                        <input class="input-field" id="nome" type="text" name="nome"
+                        <input class="input-field" id="nome" type="text" name="nome" placeholder="Nome"
                             value="<?php echo htmlspecialchars($dto ? $dto->nome : $utente->nome); ?>" required>
                         <?php if (isset($errors['nome'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['nome']); ?></p>
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="form-field">
                         <label for="cognome">Cognome</label>
-                        <input class="input-field" id="cognome" type="text" name="cognome"
+                        <input class="input-field" id="cognome" type="text" name="cognome" placeholder="Cognome"
                             value="<?php echo htmlspecialchars($dto ? $dto->cognome : $utente->cognome); ?>" required>
                         <?php if (isset($errors['cognome'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['cognome']); ?></p>
@@ -113,16 +113,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="form-field">
                         <label for="email">Email</label>
-                        <input class="input-field" id="email" type="email" name="email"
+                        <input class="input-field" id="email" type="email" name="email" placeholder="Email"
                             value="<?php echo htmlspecialchars($dto ? $dto->email : $utente->email); ?>" required>
                         <?php if (isset($errors['email'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['email']); ?></p>
                         <?php endif; ?>
                     </div>
                     <div class="form-field">
-                        <label for="telefono">Telefono</label>
-                        <input class="input-field" id="telefono" type="text" name="telefono"
-                            value="<?php echo htmlspecialchars($dto ? ($dto->telefono ?? '') : ($utente->telefono ?? '')); ?>">
+                        <label for="password">Nuova Password (opzionale)</label>
+                        <input class="input-field" id="password" type="password" name="password"
+                            placeholder="Lascia vuoto per mantenere quella attuale">
+                        <?php if (isset($errors['password'])): ?>
+                            <p class="field-error"><?php echo htmlspecialchars($errors['password']); ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="form-field">
                         <label for="ruolo_id">Ruolo</label>
@@ -139,12 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endif; ?>
                     </div>
                     <div class="form-field">
-                        <label for="password">Nuova Password (opzionale)</label>
-                        <input class="input-field" id="password" type="password" name="password"
-                            placeholder="Lascia vuoto per mantenere quella attuale">
-                        <?php if (isset($errors['password'])): ?>
-                            <p class="field-error"><?php echo htmlspecialchars($errors['password']); ?></p>
-                        <?php endif; ?>
+                        <label for="telefono">Telefono</label>
+                        <input class="input-field" id="telefono" type="text" name="telefono" placeholder="Telefono"
+                            value="<?php echo htmlspecialchars($dto ? ($dto->telefono ?? '') : ($utente->telefono ?? '')); ?>">
                     </div>
                 </div>
                 <div class="actions">

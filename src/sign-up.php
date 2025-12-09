@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                 <div class="form-grid">
                     <div class="form-field">
-                        <label for="nome">Nome</label>
+                        <label for="nome">Nome *</label>
                         <input class="input-field" id="nome" type="text" name="nome" placeholder="Mario"
                             value="<?php echo htmlspecialchars($nome); ?>" required>
                         <?php if (isset($errors['nome'])): ?>
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="form-field">
-                        <label for="cognome">Cognome</label>
+                        <label for="cognome">Cognome *</label>
                         <input class="input-field" id="cognome" type="text" name="cognome" placeholder="Rossi"
                             value="<?php echo htmlspecialchars($cognome); ?>" required>
                         <?php if (isset($errors['cognome'])): ?>
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="form-field">
-                        <label for="email">Email</label>
+                        <label for="email">Email *</label>
                         <input class="input-field" id="email" type="email" name="email" placeholder="tua@email.com"
                             value="<?php echo htmlspecialchars($email); ?>" required>
                         <?php if (isset($errors['email'])): ?>
@@ -128,18 +128,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="form-field">
-                        <label for="telefono">Telefono (opzionale)</label>
-                        <input class="input-field" id="telefono" type="text" name="telefono" placeholder="1234567890"
-                            value="<?php echo htmlspecialchars($telefono); ?>">
-                    </div>
-
-                    <div class="form-field">
-                        <label for="password">Password</label>
+                        <label for="password">Password *</label>
                         <input class="input-field" id="password" type="password" name="password"
                             placeholder="Almeno 8 caratteri" required>
                         <?php if (isset($errors['password'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['password']); ?></p>
                         <?php endif; ?>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="telefono">Telefono</label>
+                        <input class="input-field" id="telefono" type="text" name="telefono" placeholder="1234567890"
+                            value="<?php echo htmlspecialchars($telefono); ?>">
                     </div>
                 </div>
 

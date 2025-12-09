@@ -63,24 +63,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST" action="">
                 <div class="form-grid">
                     <div class="form-field">
-                        <label for="nome">Nome</label>
+                        <label for="nome">Nome *</label>
                         <input class="input-field" id="nome" type="text" name="nome" placeholder="Nome" required>
                     </div>
                     <div class="form-field">
-                        <label for="cognome">Cognome</label>
+                        <label for="cognome">Cognome *</label>
                         <input class="input-field" id="cognome" type="text" name="cognome" placeholder="Cognome"
                             required>
                     </div>
                     <div class="form-field">
-                        <label for="email">Email</label>
+                        <label for="email">Email *</label>
                         <input class="input-field" id="email" type="email" name="email" placeholder="Email" required>
                     </div>
                     <div class="form-field">
-                        <label for="telefono">Telefono</label>
-                        <input class="input-field" id="telefono" type="text" name="telefono" placeholder="Telefono">
+                        <label for="password">Password *</label>
+                        <input class="input-field" id="password" type="password" name="password"
+                            placeholder="Almeno 8 caratteri" required>
                     </div>
                     <div class="form-field">
-                        <label for="ruolo_id">Ruolo (opzionale)</label>
+                        <label for="ruolo_id">Ruolo</label>
                         <select class="input-field" id="ruolo_id" name="ruolo_id">
                             <option value="">Senza ruolo</option>
                             <?php foreach ($ruoli as $ruolo): ?>
@@ -91,9 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
                     <div class="form-field">
-                        <label for="password">Password</label>
-                        <input class="input-field" id="password" type="password" name="password"
-                            placeholder="Almeno 8 caratteri" required>
+                        <label for="telefono">Telefono</label>
+                        <input class="input-field" id="telefono" type="text" name="telefono" placeholder="Telefono">
                     </div>
                 </div>
                 <div class="actions">
