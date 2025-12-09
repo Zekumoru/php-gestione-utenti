@@ -10,8 +10,13 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $conn->exec("
-        CREATE DATABASE IF NOT EXISTS $dbname;
-        USE $dbname;
+        CREATE DATABASE IF NOT EXISTS `$dbname`;
+        USE `$dbname`;
+
+        CREATE TABLE IF NOT EXISTS ruoli (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nome_ruolo VARCHAR(50) NOT NULL UNIQUE
+        );
 
         CREATE TABLE IF NOT EXISTS utenti (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,7 +25,9 @@ try {
             telefono VARCHAR (15),	
             email VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
-            data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ruolo_id INT NULL,
+            data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            CONSTRAINT fk_utenti_ruolo FOREIGN KEY (ruolo_id) REFERENCES ruoli(id) ON DELETE SET NULL
         );
 
         CREATE TABLE IF NOT EXISTS cookies (
@@ -42,15 +49,26 @@ try {
         );
     ");
 
+    $existingRoles = (int) $conn->query("SELECT COUNT(*) FROM ruoli")->fetchColumn();
+    if ($existingRoles === 0) {
+        $conn->exec("INSERT INTO ruoli (nome_ruolo) VALUES ('Amministratore'), ('Editore'), ('Visitatore')");
+    }
+
+    $roleIds = [];
+    $roleRows = $conn->query("SELECT id, nome_ruolo FROM ruoli")->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($roleRows as $roleRow) {
+        $roleIds[$roleRow['nome_ruolo']] = (int) $roleRow['id'];
+    }
+
     $existingUtenti = (int) $conn->query("SELECT COUNT(*) FROM utenti")->fetchColumn();
     if ($existingUtenti === 0) {
         $passwordHash = password_hash('password123', PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO utenti (nome, cognome, email, telefono, password) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO utenti (nome, cognome, email, telefono, password, ruolo_id) VALUES (?, ?, ?, ?, ?, ?)");
         $seedData = [
-            ['Mario', 'Rossi', 'mario.rossi@email.com', '1234567890', $passwordHash],
-            ['Luca', 'Bianchi', 'luca.bianchi@email.com', '0987654321', $passwordHash],
-            ['Anna', 'Verdi', 'anna.verdi@email.com', '5551234567', $passwordHash],
-            ['Demo', 'Admin', 'admin@example.com', '0000000000', $passwordHash],
+            ['Mario', 'Rossi', 'mario.rossi@email.com', '1234567890', $passwordHash, $roleIds['Visitatore'] ?? null],
+            ['Luca', 'Bianchi', 'luca.bianchi@email.com', '0987654321', $passwordHash, $roleIds['Editore'] ?? null],
+            ['Anna', 'Verdi', 'anna.verdi@email.com', '5551234567', $passwordHash, $roleIds['Visitatore'] ?? null],
+            ['Demo', 'Admin', 'admin@example.com', '0000000000', $passwordHash, $roleIds['Amministratore'] ?? null],
         ];
 
         foreach ($seedData as $row) {

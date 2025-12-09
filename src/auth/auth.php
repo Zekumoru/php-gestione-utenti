@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../db/conn.php';
 require_once __DIR__ . '/../repositories/UserRepository.php';
 require_once __DIR__ . '/../repositories/CookieRepository.php';
+require_once __DIR__ . '/roles.php';
 
 // Ottiene il percorso assoluto della cartella del progetto
 $projectRoot = realpath(__DIR__ . '/..');

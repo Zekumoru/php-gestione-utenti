@@ -2,13 +2,15 @@
 require_once dirname(__DIR__, 2) . '/auth/auth.php';
 require_once dirname(__DIR__, 2) . '/models/User.php';
 require_once dirname(__DIR__, 2) . '/repositories/UserRepository.php';
+require_once dirname(__DIR__, 2) . '/repositories/RoleRepository.php';
+
+$roleRepository = new RoleRepository($conn);
+$ruoli = $roleRepository->findAll();
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $userRepository = new UserRepository($conn);
 
-$stmt = $conn->prepare("SELECT * FROM utenti WHERE id = ?");
-$stmt->execute([$id]);
-$utente = $stmt->fetch(PDO::FETCH_ASSOC);
+$utente = $userRepository->findById($id);
 
 if (!$utente) {
     header("Location: lista_utenti.php");
@@ -35,9 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['password'] = "Minimo 8 caratteri";
     }
 
-    $emailOwnerStmt = $conn->prepare("SELECT id FROM utenti WHERE email = ? AND id <> ?");
-    $emailOwnerStmt->execute([$dto->email, $id]);
-    if ($emailOwnerStmt->fetch()) {
+    $validRoleIds = array_map(fn($ruolo) => $ruolo->id, $ruoli);
+    if ($dto->ruolo_id !== null && !in_array($dto->ruolo_id, $validRoleIds, true)) {
+        $errors['ruolo_id'] = "Seleziona un ruolo valido";
+    }
+
+    if ($userRepository->emailInUseByAnother($dto->email, $id)) {
         $errors['email'] = "Email già in uso da un altro account";
     }
 
@@ -54,10 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     $dto = new UpdateUserDTO([
-        'nome' => $utente['nome'],
-        'cognome' => $utente['cognome'],
-        'email' => $utente['email'],
-        'telefono' => $utente['telefono'] ?? '',
+        'nome' => $utente->nome,
+        'cognome' => $utente->cognome,
+        'email' => $utente->email,
+        'telefono' => $utente->telefono ?? '',
+        'ruolo_id' => $utente->ruolo_id ?? '',
         'password' => '',
     ]);
 }
@@ -92,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-field">
                         <label for="nome">Nome</label>
                         <input class="input-field" id="nome" type="text" name="nome"
-                            value="<?php echo htmlspecialchars($dto ? $dto->nome : $utente['nome']); ?>" required>
+                            value="<?php echo htmlspecialchars($dto ? $dto->nome : $utente->nome); ?>" required>
                         <?php if (isset($errors['nome'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['nome']); ?></p>
                         <?php endif; ?>
@@ -100,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-field">
                         <label for="cognome">Cognome</label>
                         <input class="input-field" id="cognome" type="text" name="cognome"
-                            value="<?php echo htmlspecialchars($dto ? $dto->cognome : $utente['cognome']); ?>" required>
+                            value="<?php echo htmlspecialchars($dto ? $dto->cognome : $utente->cognome); ?>" required>
                         <?php if (isset($errors['cognome'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['cognome']); ?></p>
                         <?php endif; ?>
@@ -108,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-field">
                         <label for="email">Email</label>
                         <input class="input-field" id="email" type="email" name="email"
-                            value="<?php echo htmlspecialchars($dto ? $dto->email : $utente['email']); ?>" required>
+                            value="<?php echo htmlspecialchars($dto ? $dto->email : $utente->email); ?>" required>
                         <?php if (isset($errors['email'])): ?>
                             <p class="field-error"><?php echo htmlspecialchars($errors['email']); ?></p>
                         <?php endif; ?>
@@ -116,7 +122,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-field">
                         <label for="telefono">Telefono</label>
                         <input class="input-field" id="telefono" type="text" name="telefono"
-                            value="<?php echo htmlspecialchars($dto ? ($dto->telefono ?? '') : ($utente['telefono'] ?? '')); ?>">
+                            value="<?php echo htmlspecialchars($dto ? ($dto->telefono ?? '') : ($utente->telefono ?? '')); ?>">
+                    </div>
+                    <div class="form-field">
+                        <label for="ruolo_id">Ruolo</label>
+                        <select class="input-field" id="ruolo_id" name="ruolo_id">
+                            <option value="">Senza ruolo</option>
+                            <?php foreach ($ruoli as $ruolo): ?>
+                                <option value="<?php echo $ruolo->id; ?>"
+                                    <?php echo (string) ($dto?->ruolo_id ?? '') === (string) $ruolo->id ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($ruolo->nome_ruolo); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php if (isset($errors['ruolo_id'])): ?>
+                            <p class="field-error"><?php echo htmlspecialchars($errors['ruolo_id']); ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="form-field">
                         <label for="password">Nuova Password (opzionale)</label>

@@ -8,6 +8,8 @@ class User
         public string $cognome,
         public string $email,
         public ?string $telefono = null,
+        public ?int $ruolo_id = null,
+        public ?string $ruolo_nome = null,
     ) {
     }
 
@@ -19,6 +21,8 @@ class User
             $row['cognome'],
             $row['email'],
             $row['telefono'] ?? null,
+            isset($row['ruolo_id']) ? (int) $row['ruolo_id'] : null,
+            $row['ruolo_nome'] ?? $row['nome_ruolo'] ?? null,
         );
     }
 
@@ -30,14 +34,20 @@ class User
 
 class PasswordUser extends User
 {
+    public string $password;
+
     public function __construct(
-        public int $id,
-        public string $nome,
-        public string $cognome,
-        public string $email,
-        public ?string $telefono,
-        public string $password,
+        int $id,
+        string $nome,
+        string $cognome,
+        string $email,
+        ?string $telefono,
+        string $password,
+        ?int $ruolo_id = null,
+        ?string $ruolo_nome = null,
     ) {
+        parent::__construct($id, $nome, $cognome, $email, $telefono, $ruolo_id, $ruolo_nome);
+        $this->password = $password;
     }
 
     public static function fromArray(array $row): self
@@ -49,6 +59,8 @@ class PasswordUser extends User
             $row['email'],
             $row['telefono'] ?? null,
             $row['password'],
+            isset($row['ruolo_id']) ? (int) $row['ruolo_id'] : null,
+            $row['ruolo_nome'] ?? $row['nome_ruolo'] ?? null,
         );
     }
 }
@@ -60,6 +72,7 @@ class CreateUserDTO
     public string $email;
     public string $password;
     public ?string $telefono;
+    public ?int $ruolo_id;
 
     public function __construct(array $data)
     {
@@ -68,6 +81,7 @@ class CreateUserDTO
         $this->email = strtolower(trim($data['email'] ?? ''));
         $this->password = $data['password'] ?? '';
         $this->telefono = trim($data['telefono'] ?? '') ?: null;
+        $this->ruolo_id = isset($data['ruolo_id']) && $data['ruolo_id'] !== '' ? (int) $data['ruolo_id'] : null;
     }
 
     public function hashPassword(): void

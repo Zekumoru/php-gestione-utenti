@@ -1,16 +1,13 @@
 <?php
 require_once dirname(__DIR__, 2) . '/auth/auth.php';
 
+$userRepository = new UserRepository($conn);
+
 if (isset($_GET['elimina'])) {
-    $id = $_GET['elimina'];
-    $sql = "DELETE FROM utenti WHERE id = $id";
-    $conn->prepare($sql)->execute();
+    $userRepository->deleteById((int) $_GET['elimina']);
 }
 
-$sql = "SELECT * FROM utenti";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$users = $userRepository->findAll();
 ?>
 
 <!DOCTYPE html>
@@ -42,28 +39,30 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th>Cognome</th>
                             <th>Email</th>
                             <th>Telefono</th>
+                            <th>Ruolo</th>
                             <th>Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (empty($rows)): ?>
+                        <?php if (empty($users)): ?>
                             <tr>
-                                <td class="muted" colspan="6">Nessun utente presente.</td>
+                                <td class="muted" colspan="7">Nessun utente presente.</td>
                             </tr>
                         <?php else: ?>
-                            <?php foreach ($rows as $row): ?>
+                            <?php foreach ($users as $user): ?>
                                 <tr>
-                                    <td><?php echo $row['id']; ?></td>
-                                    <td><?php echo $row['nome']; ?></td>
-                                    <td><?php echo $row['cognome']; ?></td>
-                                    <td><?php echo $row['email']; ?></td>
-                                    <td><?php echo $row['telefono']; ?></td>
+                                    <td><?php echo $user->id; ?></td>
+                                    <td><?php echo htmlspecialchars($user->nome); ?></td>
+                                    <td><?php echo htmlspecialchars($user->cognome); ?></td>
+                                    <td><?php echo htmlspecialchars($user->email); ?></td>
+                                    <td><?php echo htmlspecialchars($user->telefono ?? '—'); ?></td>
+                                    <td><?php echo htmlspecialchars($user->ruolo_nome ?? '—'); ?></td>
                                     <td>
                                         <div class="actions-row">
                                             <a class="action-link"
-                                                href="modifica_utente.php?id=<?php echo $row['id']; ?>">Modifica</a>
+                                                href="modifica_utente.php?id=<?php echo $user->id; ?>">Modifica</a>
                                             <a class="action-link danger"
-                                                href="lista_utenti.php?elimina=<?php echo $row['id']; ?>">Elimina</a>
+                                                href="lista_utenti.php?elimina=<?php echo $user->id; ?>">Elimina</a>
                                         </div>
                                     </td>
                                 </tr>

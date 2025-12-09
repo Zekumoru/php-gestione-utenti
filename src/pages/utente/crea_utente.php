@@ -1,33 +1,34 @@
 <?php
 require_once dirname(__DIR__, 2) . '/auth/auth.php';
+require_once dirname(__DIR__, 2) . '/models/User.php';
+require_once dirname(__DIR__, 2) . '/repositories/UserRepository.php';
+require_once dirname(__DIR__, 2) . '/repositories/RoleRepository.php';
+
+$roleRepository = new RoleRepository($conn);
+$userRepository = new UserRepository($conn);
+$ruoli = $roleRepository->findAll();
+$selectedRoleId = $_POST['ruolo_id'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = trim($_POST['nome']);
-    $cognome = trim($_POST['cognome']);
-    $email = strtolower(trim($_POST['email']));
-    $telefono = trim($_POST['telefono']);
-    $password = $_POST['password'];
+    $dto = new CreateUserDTO($_POST);
+    $selectedRoleId = $dto->ruolo_id ?? '';
 
-    if ($password === '' || strlen($password) < 8) {
+    $validRoleIds = array_map(fn($ruolo) => $ruolo->id, $ruoli);
+    if ($dto->ruolo_id !== null && !in_array($dto->ruolo_id, $validRoleIds, true)) {
+        $error = "Ruolo selezionato non valido.";
+    }
+
+    if ($dto->password === '' || strlen($dto->password) < 8) {
         $error = "La password deve avere almeno 8 caratteri.";
     }
 
-    $existing = $conn->prepare("SELECT id FROM utenti WHERE email = ?");
-    $existing->execute([$email]);
-    if ($existing->fetch()) {
+    if (!isset($error) && $userRepository->emailExists($dto->email)) {
         $error = "Email già registrata.";
     }
 
     if (!isset($error)) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO utenti (nome, cognome, email, telefono, password) VALUES (:nome, :cognome, :email, :telefono, :password)");
-        $stmt->execute([
-            ':nome' => $nome,
-            ':cognome' => $cognome,
-            ':email' => $email,
-            ':telefono' => $telefono ?: null,
-            ':password' => $hashedPassword,
-        ]);
+        $dto->hashPassword();
+        $userRepository->insertOne($dto);
 
         header("Location: lista_utenti.php");
         exit;
@@ -77,6 +78,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-field">
                         <label for="telefono">Telefono</label>
                         <input class="input-field" id="telefono" type="text" name="telefono" placeholder="Telefono">
+                    </div>
+                    <div class="form-field">
+                        <label for="ruolo_id">Ruolo (opzionale)</label>
+                        <select class="input-field" id="ruolo_id" name="ruolo_id">
+                            <option value="">Senza ruolo</option>
+                            <?php foreach ($ruoli as $ruolo): ?>
+                                <option value="<?php echo $ruolo->id; ?>"
+                                    <?php echo (string) $selectedRoleId === (string) $ruolo->id ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($ruolo->nome_ruolo); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="form-field">
                         <label for="password">Password</label>
